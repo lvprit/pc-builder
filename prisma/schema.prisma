@@ -9,8 +9,8 @@ generator client {
 // enough when changing adapters.
 // See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Session {
@@ -29,12 +29,48 @@ model Session {
   locale        String?
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Builder {
+  id        Int      @id @default(autoincrement())
+  shopId    String
+  name      String
+  category  String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  components Component[]
+}
+
+model Component {
+  id        Int @id @default(autoincrement())
+  shopId    String
+  builderId Int
+  name             String
+
+  sourceType          String? // "manual" | "tag" | "collection"
+  shopifyProductIds   Json? // for manual
+  shopifyTag          String? // for tag
+  shopifyCollectionId String? // for collection
+  collectionTitle String? // for collection
+
+  isMultiSelct Boolean?
+  order Int?
+
+  builder Builder @relation(fields: [builderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PcBuilderProduct {
-  id              Int     @id @default(autoincrement())
+  id               Int     @id @default(autoincrement())
   shopifyProductId String
-  title           String
-  image           String?
-  category        String?
+  title            String
+  image            String?
+  category         String?
 }

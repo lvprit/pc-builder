@@ -20,6 +20,11 @@ const shopify = shopifyApp({
     unstable_newEmbeddedAuthStrategy: true,
     removeRest: true,
   },
+  // hooks: {
+  //   afterAuth: async function name({ session }) {
+  //     shopify.registerWebhooks(({ session }))  
+  //   }
+  // },
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),
