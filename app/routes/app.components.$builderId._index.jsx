@@ -20,32 +20,14 @@ import { authenticate } from "../shopify.server"
 import prisma from "../db.server"
 import ShopifyToast from "../components/ShopifyToast"
 import ConfirmationModal from "../components/ConfirmationModal"
+import { fetchBuilderComponents } from '../helper/getComponents'
 
 export async function loader({ request, params }) {
   const { session } = await authenticate.admin(request);
   const builderId = parseInt(params.builderId, 10);
   
   try {
-    const components = await prisma.component.findMany({
-      select: {
-        id: true,
-        name: true,
-        order: true,
-        isMultiSelct: true,
-        shopifyProductIds: true,
-        collectionTitle: true,
-        shopifyCollectionId: true,
-        createdAt: true,
-      },
-      where: {
-        shopId: session.id,
-        builderId
-      },
-      orderBy: [
-        { order: "asc" },       // First sort by the 'order' field
-        { createdAt: "desc" }   // Then by 'createdAt' for tie-breaks or nulls
-      ]
-    });
+    const components = await fetchBuilderComponents(session.shop, builderId);
     return json({ components });
   } catch (error) {
     console.error('Error fetching components:', error);
@@ -65,6 +47,9 @@ export async function loader({ request, params }) {
 export let action = async ({ request, params }) => {
   const { session } = await authenticate.admin(request);
 
+  console.log(session, 'sessionn..');
+  
+
   try {
     // Get builderId from URL params
     const builderId = parseInt(params.builderId, 10); // This grabs builderId from the URL
@@ -75,7 +60,7 @@ export let action = async ({ request, params }) => {
         data: {
           builderId, // Use builderId from URL
           name: data.name,
-          shopId: session.id,
+          shopId: session.shop,
         },
       });
   

@@ -29,7 +29,18 @@
 
   try {
     // Fetch from app proxy
-    const res = await fetch("/apps/pc-builder/products", {
+
+    // const res = await fetch("/apps/pc-builder/products?comp_id=2&cursor=eyJsYXN0X2lkIjoxMDEwNTUxNzE0NjQxMywibGFzdF92YWx1ZSI6IjAifQ==", {
+    const res = await fetch("/apps/pc-builder/products?comp_id=2&cursor=", {
+      method: 'GET',
+      redirect: 'manual',
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+
+    const components = await fetch("/apps/pc-builder/components?builder_id=16", {
       method: 'GET',
       redirect: 'manual',
       headers: {

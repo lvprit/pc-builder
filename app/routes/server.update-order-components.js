@@ -5,8 +5,6 @@ export async function action({ request }) {
   // const { session } = await authenticate.admin(request);
   const body = await request.json();
   const updatedComponents = body.components; // [{ id, order }, ...]
-
-  console.log('api calela..asd.');
   
   try {
     await prisma.$transaction(

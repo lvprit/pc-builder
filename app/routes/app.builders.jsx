@@ -35,7 +35,7 @@ export async function loader({ request }) {
     // Fetch all builders from the database
     const builders = await prisma.builder.findMany({
       where: {
-        shopId: session.id
+        shopId: session.shop
       }
     });
 
@@ -76,7 +76,7 @@ export async function action({ request }) {
           data: {
             name,
             category,
-            shopId: session.id,
+            shopId: session.shop,
             status: "active",
           },
         });
@@ -88,7 +88,7 @@ export async function action({ request }) {
           data: {
             name,
             category,
-            shopId: session.id,
+            shopId: session.shop,
             status: "active",
           },
         });
