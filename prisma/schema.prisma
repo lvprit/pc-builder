@@ -74,3 +74,54 @@ model PcBuilderProduct {
   image            String?
   category         String?
 }
+
+enum DiscountStatus {
+  active
+  inactive
+  draft
+}
+
+enum DiscountRuleType {
+  spend_threshold
+  item_count
+  reduce_shipping
+}
+
+enum DiscountAppliesTo {
+  order
+  product
+  shipping
+}
+
+enum DiscountType {
+  percentage
+  fixed
+}
+
+model DiscountRule {
+  id        Int      @id @default(autoincrement())
+
+  /// Shopify context
+  shop      String   // shop domain (e.g. my-store.myshopify.com)
+  metafieldId String? // optional: Shopify metafield ID
+
+  /// Core fields
+  name      String
+  status    DiscountStatus
+  ruleType  DiscountRuleType
+  appliesTo DiscountAppliesTo
+
+  /// Conditions & Actions (flexible JSON)
+  minSubtotal Int?
+  itemCount Int?
+  
+  discountType DiscountType
+  discountValue Int 
+  
+  /// Auditing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shop])
+  @@index([status])
+}

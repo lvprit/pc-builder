@@ -20,6 +20,7 @@ import { authenticate } from "../shopify.server"
 import prisma from "../db.server"
 import ShopifyToast from "../components/ShopifyToast"
 import ConfirmationModal from "../components/ConfirmationModal"
+import TopBarComponent from "../components/TopBarComponent"
 import { fetchBuilderComponents } from '../helper/getComponents'
 
 export async function loader({ request, params }) {
@@ -45,10 +46,7 @@ export async function loader({ request, params }) {
 
 // Action function to handle form submission
 export let action = async ({ request, params }) => {
-  const { session } = await authenticate.admin(request);
-
-  console.log(session, 'sessionn..');
-  
+  const { session } = await authenticate.admin(request);  
 
   try {
     // Get builderId from URL params
@@ -95,7 +93,6 @@ export default function ComponentManagement({ onManageCompatibility }) {
 
   // Function to handle the new sort order
   const handleOrderChange = async (newOrder) => {
-    console.log(newOrder, 'new Orderw...');
     setComponents(newOrder);
     if(newOrder) {
       const componentsOrder = newOrder.map((itm, indx) => ({ id:itm.id, order:indx }));
@@ -233,36 +230,30 @@ export default function ComponentManagement({ onManageCompatibility }) {
 
   return (
     <Page>
-      {/* Header wrapped in a Card for styling */}
-      <Card>
         <InlineStack align="space-between" blockAlign="center">
           <InlineStack blockAlign="center" gap="200">
-            <Button onClick={() => navigate('/app/builders')} icon={ArrowLeftIcon}>
+            {/* <Button onClick={() => navigate('/app')} icon={ArrowLeftIcon}> */}
+            <ArrowLeftIcon onClick={() => navigate('/app')} height={24} cursor={'pointer'}>
               Back
-            </Button>
+            </ArrowLeftIcon>
+            {/* </Button> */}
             <Text variant="headingLg" as="h2" fontWeight="bold">
               Component Management
             </Text>
           </InlineStack>
-          <Button icon={ArrowRightIcon} variant="primary">Add Compatibility</Button>
+          {/* <Button icon={ArrowRightIcon} variant="primary">Add Compatibility</Button> */}
+          <Box paddingBlock="400">
+            <Button onClick={() => {
+              setEditingBuilder(null)
+              setIsModalOpen(true)
+            }
+            } variant="primary" icon={PlusIcon}>
+              Add Component
+            </Button>
+          </Box>
         </InlineStack>
-      </Card>
-
-      {/* Section for Add Components instructions */}
-      <InlineStack paddingBlock="400" align="space-between" blockAlign="center">
-        <Text variant="bodyMd" as="p" tone="subdued">
-          Add components to this builder. Click on a component to add products.
-        </Text>
-        <Box paddingBlock="400">
-          <Button onClick={() => {
-            setEditingBuilder(null)
-            setIsModalOpen(true)
-          }
-          } primary icon={PlusIcon}>
-            Add Component
-          </Button>
-        </Box>
-      </InlineStack>
+      <TopBarComponent builderId={builderId} />
+      
 
       {/* Main Content Section */}
       <Card>

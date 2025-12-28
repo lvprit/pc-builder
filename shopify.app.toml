@@ -2,9 +2,13 @@
 
 client_id = "14fa5dd8e7343a710c4198be96d225df"
 name = "Pc builder"
+
+#client_id = "351bdf7cc833597f68f42343af76346c"
+#name = "pc-builder-dev"
+
 application_url = "https://emma-aggressive-don-nano.trycloudflare.com"
 embedded = true
-handle = "pc-builder-4"
+#handle="pc-builder-4"
 
 [build]
 automatically_update_urls_on_dev = true
@@ -15,7 +19,7 @@ api_version = "2025-07"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products, write_app_proxy"
+scopes = "write_products, write_app_proxy, write_discounts, read_discounts"
 
 [auth]
 redirect_urls = [

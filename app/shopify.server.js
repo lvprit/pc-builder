@@ -14,7 +14,7 @@ export const ANNUAL_PLAN = 'Annual subscription';
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
-  apiVersion: ApiVersion.January25,
+  apiVersion: ApiVersion.April25,
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
@@ -37,6 +37,7 @@ const shopify = shopifyApp({
       amount: 14.99,
       currencyCode: 'USD',
       interval: BillingInterval.Every30Days,
+      trialDays : 7
     },
     // [ANNUAL_PLAN]: {
     //   amount: 50,
@@ -47,7 +48,7 @@ const shopify = shopifyApp({
 });
 
 export default shopify;
-export const apiVersion = ApiVersion.January25;
+export const apiVersion = ApiVersion.April25;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
 export const authenticate = shopify.authenticate;
 export const unauthenticated = shopify.unauthenticated;

@@ -1,0 +1,27 @@
+query DeliveryInput {
+  cart {
+    deliveryGroups {
+      id
+    }
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+      builderBundleId: attribute(key: "_builder_bundle_id") {
+        value
+      }
+    }
+  }
+  shop {
+    metafield(namespace: "builder", key: "pc_buidler_app"){
+      value
+    }
+  }
+  discount {
+    discountClasses
+  }
+}
